@@ -37,6 +37,22 @@ services:
       PULSAR_PREFIX_brokerWebServiceURL: http://pulsar:8080
       PULSAR_PREFIX_functionWorkerWebServiceURL: http://pulsar:8080
 
+  yugabyte:
+    image: yugabytedb/yugabyte:2.16.0.1-b7
+    command:
+      - bin/yugabyted
+      - start
+      - --daemon=false
+      - --base_dir=/home/yugabyte/yb_data
+    volumes:
+      - yugabytedata:/home/yugabyte/yb_data
+    ports:
+      - 7000:7000
+      - 9000:9000
+      - 5433:5433
+      - 9042:9042
+
 volumes:
   pulsardata:
   pulsarconf:
+  yugabytedata:
