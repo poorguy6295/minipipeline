@@ -22,4 +22,7 @@
 ### Caveat
 
 - Yugabyte DB and Table must be created before CDC stream
+
   - CDC stream only cover whatever table exists at the time of CDC creation
+
+- Debezium server will fail if CDC stream id have no table subcription
