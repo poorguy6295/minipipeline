@@ -1,0 +1,42 @@
+version: "3.8"
+
+services:
+  # Pulsar server
+  pulsar:
+    image: &pulsar_image apachepulsar/pulsar:2.11.0
+    entrypoint:
+      - sh
+      - "-c"
+    command:
+      - >
+        bin/apply-config-from-env.py conf/standalone.conf &&
+        exec bin/pulsar standalone
+    volumes:
+      - pulsarconf:/pulsar/conf
+      - pulsardata:/pulsar/data
+    ports:
+      - 8080:8080
+    environment:
+      PULSAR_PREFIX_functionsWorkerEnabled: "true"
+      PULSAR_PREFIX_advertisedAddress: "pulsar"
+
+  # Pulsar proxy for docker external network
+  pulsar-proxy:
+    image: *pulsar_image
+    entrypoint:
+      - sh
+      - "-c"
+    command:
+      - >
+        bin/apply-config-from-env.py conf/proxy.conf &&
+        exec bin/pulsar proxy
+    ports:
+      - 6650:6650
+    environment:
+      PULSAR_PREFIX_brokerServiceURL: pulsar://pulsar:6650
+      PULSAR_PREFIX_brokerWebServiceURL: http://pulsar:8080
+      PULSAR_PREFIX_functionWorkerWebServiceURL: http://pulsar:8080
+
+volumes:
+  pulsardata:
+  pulsarconf:
