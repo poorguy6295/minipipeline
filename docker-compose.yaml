@@ -52,7 +52,17 @@ services:
       - 5433:5433
       - 9042:9042
 
+  debezium:
+    image: anduin-debezium
+    build: ./docker/debezium
+    volumes:
+      - ./confs/debezium:/debezium/conf
+      - debeziumdata:/debezium/data
+    ports:
+      - 8081:8080
+
 volumes:
   pulsardata:
   pulsarconf:
   yugabytedata:
+  debeziumdata:
