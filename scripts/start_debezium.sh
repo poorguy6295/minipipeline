@@ -1,0 +1,7 @@
+#!/bin/env bash
+
+here=`cd $(dirname $BASH_SOURCE); pwd`
+root="$here/../"
+
+cd $root
+docker-compose up -d debezium

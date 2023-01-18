@@ -46,6 +46,7 @@ services:
       - --base_dir=/home/yugabyte/yb_data
     volumes:
       - yugabytedata:/home/yugabyte/yb_data
+      - ./confs/yugabyte:/home/anduin
     ports:
       - 7000:7000
       - 9000:9000
