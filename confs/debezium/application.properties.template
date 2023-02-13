@@ -16,3 +16,4 @@ debezium.source.database.server.name=localyb
 debezium.source.table.include.list=public.*
 debezium.source.database.streamid=__CDC_STREAM_ID__
 debezium.source.snapshot.mode=never
+debezium.source.tombstones.on.delete=false

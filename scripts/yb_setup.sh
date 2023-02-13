@@ -1,4 +1,4 @@
-#!/bin/env bash
+#!/bin/bash
 
 set -e
 
@@ -7,7 +7,7 @@ root="$here/../"
 cd $root
 
 function create_cdc() {
-  result=$(docker-compose exec yugabyte bin/yb-admin --master_addresses=yugabyte:7100 create_change_data_stream ysql.gondor)
+  result=$(docker-compose exec yugabyte bin/yb-admin --master_addresses=yugabyte:7100 create_change_data_stream ysql.gondor IMPLICIT ALL)
   cdc_id=$(echo $result | sed 's/CDC Stream ID: //g')
   template_file=$root/confs/debezium/application.properties.template
   config_file=$root/confs/debezium/application.properties
@@ -18,8 +18,6 @@ function create_cdc() {
 function create_gondor_db() {
   docker-compose exec yugabyte bin/ysqlsh -h yugabyte --command="CREATE DATABASE gondor"
   echo "Create Yugabyte DB gondor done"
-  docker-compose exec yugabyte bin/ysqlsh -h yugabyte --file=/home/anduin/table.sql gondor
-  echo "Create Yugabyte table done"
 }
 
 create_gondor_db || true
